@@ -1,12 +1,24 @@
-import pyping, socket, ipaddress
+import pyping, socket, ipaddress, struct
 
 myip = socket.gethostbyname(socket.gethostname())
 
-network = ipaddress.IPv4Network(myip , strict=False)
+def findnth(haystack, needle, n):
+    parts= haystack.split(needle, n+1)
+    if len(parts)<=n+1:
+        return -1
+    return len(haystack)-len(parts[-1])-len(needle)
 
-for x in network:
-	response = typing.ping(myip)
+i = findnth(myip, ".", 2)
+
+subnetMask = myip[:i-1] + "0.0/16"
+uMySubnet = unicode(subnetMask, "utf-8")
+
+network = ipaddress.IPv4Network(uMySubnet , strict=False)
+
+for x in network.hosts():
+	response = pyping.ping(str(x))
+	ip = socket.inet_ntoa(struct.pack('!L', x))
 	if response.ret_code == 0:
-		print "%d is up" % (x)
+		print "%s is up" % (ip)
 	else:
-		print "%d is down" % (x)
+		print "%s is down" % (ip)
