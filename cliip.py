@@ -1,4 +1,7 @@
+from flask import Flask
 import pyping, socket, ipaddress, struct
+from flask_sqlalchemy import SQLAlchemy
+from IP_Status import db, IpStatus
 
 myip = socket.gethostbyname(socket.gethostname())
 
@@ -18,7 +21,13 @@ network = ipaddress.IPv4Network(uMySubnet , strict=False)
 for x in network.hosts():
 	response = pyping.ping(str(x))
 	ip = socket.inet_ntoa(struct.pack('!L', x))
+	status = None
 	if response.ret_code == 0:
 		print "%s is up" % (ip)
+		status = IpStatus(ip, True)
 	else:
 		print "%s is down" % (ip)
+		status = IpStatus(ip, False)
+	db.session.add(status)
+	db.create_all()
+	db.session.commit()
