@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>IPFreely - Available IP Addresses</title>
 </head>
 <body>
-	<p>This is a test</p>
+	<p>Welcome to IPFreely. Here is a list of the available IP addresses on your subnet:</p>
+
+	<ul>
+	{% for ipstatus in addresses %}
+		{% if ipstatus.free %}
+			<li>{{ipstatus.ip_address}}</li>
+		{% endif %}
+	{% endfor %}
+	</ul>
+
 
 </body>
 </html>
