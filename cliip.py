@@ -21,13 +21,17 @@ network = ipaddress.IPv4Network(uMySubnet , strict=False)
 for x in network.hosts():
 	response = pyping.ping(str(x))
 	ip = socket.inet_ntoa(struct.pack('!L', x))
-	status = None
+	ip_record = IpStatus.query.filter(IpStatus.ip_address.endswith(ip)) #see if there is an equals method instead of endswith
+	status = IpStatus(ip, True)
 	if response.ret_code == 0:
 		print "%s is up" % (ip)
-		status = IpStatus(ip, True)
+		status.free = True
 	else:
 		print "%s is down" % (ip)
-		status = IpStatus(ip, False)
-	db.session.add(status)
-	db.create_all()
+		status.free = False
+	if not ip_record:
+		db.session.add(status)
+	else:
+		ip_record.free = status.free
+	db.create_all() #necessary?
 	db.session.commit()
