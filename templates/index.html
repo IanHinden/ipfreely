@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>IPFreely - Available IP Addresses</title>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 	<p>Welcome to IPFreely. Here is a list of the available IP addresses on your subnet:</p>
@@ -9,11 +10,11 @@
 	<ul>
 	{% for ipstatus in addresses %}
 		{% if ipstatus.free %}
-			<li>{{ipstatus.ip_address}}</li>
+			<li><a href='#' id=ipstatus.ip_address.replace(".","")>{{ipstatus.ip_address}}</li>
 		{% endif %}
 	{% endfor %}
 	</ul>
 
-
+<script type="text/javascript" src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
 </html>
