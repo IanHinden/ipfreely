@@ -24,10 +24,10 @@ for x in network.hosts():
 	ip_record = IpStatus.query.filter(IpStatus.ip_address.endswith(ip)) #see if there is an equals method instead of endswith
 	status = IpStatus(ip, True)
 	if response.ret_code == 0:
-		print "%s is up" % (ip)
+		print "%s is free" % (ip)
 		status.free = True
 	else:
-		print "%s is down" % (ip)
+		print "%s is claimed" % (ip)
 		status.free = False
 	if not ip_record:
 		db.session.add(status)

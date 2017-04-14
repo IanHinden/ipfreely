@@ -10,11 +10,14 @@
 	<ul>
 	{% for ipstatus in addresses %}
 		{% if ipstatus.free %}
-			<li><a href='#' id=ipstatus.ip_address.replace(".","")>{{ipstatus.ip_address}}</li>
+			<li>{{ipstatus.ip_address}}</li>
+			<a href="{{ url_for('delete', id=ipstatus.id) }}">Claim this IP</a>
 		{% endif %}
 	{% endfor %}
 	</ul>
 
 <script type="text/javascript" src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+
 </body>
 </html>
