@@ -3,21 +3,55 @@
 <head>
 	<title>IPFreely - Available IP Addresses</title>
 	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+	<style type="text/css">
+		.main-content{max-width:400px; margin:0 auto; background: #fff; padding: 40px;}
+		body{background:#f2f2f2; font-family: arial;}
+		li{list-style-type: none; border-bottom: 1px solid #ccc}
+		li:after{content: ' '; display: table; clear: both;}
+		ul{padding:0;}
+		ul>li>span{margin-right: 15px; padding: 10px; display: block; float: left;}
+		ul>li>a{color:#0033aa; padding: 13px 10px; text-decoration: none; float: right; font-size: 12px;}
+		ul>li>a:hover{text-decoration: underline;}
+		li:nth-child(odd){background: #f2f2f2;}
+	</style>
 </head>
 <body>
+<div class='main-content'>
 	<p>Welcome to IPFreely. Here is a list of the available IP addresses on your subnet:</p>
 
 	<ul>
 	{% for ipstatus in addresses %}
 		{% if ipstatus.free %}
-			<li>{{ipstatus.ip_address}}</li>
-			<a href="{{ url_for('delete', id=ipstatus.id) }}">Claim this IP</a>
+			<li><span>{{ipstatus.ip_address}}</span> <a data-ip="{{ipstatus.ip_address}}" data-id="{{ipstatus.id}}" class="ip_button" href="#">Claim this IP</a></li>
 		{% endif %}
 	{% endfor %}
 	</ul>
-
+</div>
 <script type="text/javascript" src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script>
+
+$(".ip_button").click(function(e){
+	e.preventDefault();
+	var id = $(this).attr("data-id");
+	var ip = $(this).attr("data-ip");
+	reserveIp(id, ip, $(this).parent());
+})
+
+	function reserveIp(id, ip, el){$.ajax({
+		type:"GET",
+		url:"/delete/"+id,
+		success: function(response){
+			if(response){
+				el.hide();
+				alert("You claimed " + ip)
+			}
+		},
+		error: function(a, b, c){
+			alert("There was an error when trying to claim this IP address")
+		}
+	})}
+</script>
 
 </body>
 </html>
