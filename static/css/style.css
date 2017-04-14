@@ -1,3 +1,40 @@
-p {
-	color: red;
-}
+		.main-content{
+			max-width:400px; 
+			margin:0 auto; b
+			ackground: #fff; 
+			adding: 40px;}
+		
+		body{
+			background:#f2f2f2; 
+			font-family: arial;}
+		
+		li{
+			list-style-type: none; 
+			border-bottom: 1px solid #ccc}
+		
+		li:after{
+			content: ' '; 
+			display: table; 
+			clear: both;}
+		
+		ul{
+			padding:0;}
+		
+		ul>li>span{
+			margin-right: 15px; 
+			padding: 10px; 
+			display: block; 
+			float: left;}
+		
+		ul>li>a{
+			color:#0033aa; 
+			padding: 13px 10px; 
+			ext-decoration: none; 
+			float: right; 
+			font-size: 12px;}
+		
+		ul>li>a:hover{
+			text-decoration: underline;}
+		
+		li:nth-child(odd){
+			background: #f2f2f2;}
